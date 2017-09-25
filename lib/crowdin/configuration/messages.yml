@@ -1,0 +1,6 @@
+messages:
+  warnings:
+    endpoints:
+      locators:
+        msg: "Locator rule: `endpoint(<some_name>).call` => SomeNameEndpoint#call"
+        color: violet
