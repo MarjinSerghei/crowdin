@@ -1,8 +1,9 @@
 # Crowdin
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/crowdin`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This library is using [_Crowdin API_](https://support.crowdin.com/api/api-integration-setup/) to perform the following operations againts _travel_management_platform_ translation files:
+  - _download_
+  - _sync_
+  - _update_
 
 ## Installation
 
@@ -22,17 +23,141 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Project initialization
+##### Adding folders to the remote project
+#
+```ruby
+bundle exec rake crowdin:translations:add_dirs[locale]
+```
+
+##### Adding files to the remote project
+#
+```ruby
+bundle exec rake crowdin:translations:add_files[locale]
+```
+
+##### Setting up the remote project with a single command
+#
+```ruby
+bundle exec rake crowdin:translations:setup[locales]
+```
+
+> Warning: These commands must be run only once (at the moment of creation). To avoid translation progress losses better use: ` sync ` and ` update_files ` when remote project is already initialized
+#
+> Warning: `setup` command does the following in background:
+- removes __/download__ folder if present
+- removes remote folders
+- adds remote folders
+- adds remote files
+
+### Translations fetching
+
+##### Export translations (_build latest changes on Crowdin_)
+#
+```ruby
+bundle exec rake crowdin:translations:export[locale]
+```
+
+##### Download translations
+#
+```ruby
+bundle exec crowdin:translations:download[locale]
+```
+
+> Note: Run `export` command each time before `download`
+#
+> Note: `download` command will fetch the remote files, create a local folder __config/locales/download__ and store the fetched files there. Files can be manually copied to __config/locales/<locale>/...__
+#
+
+### Files synchronization
+
+##### Synchronize folders
+#
+```ruby
+bundle exec rake crowdin:translations:sync_dirs[locale]
+```
+
+##### Synchronize files
+#
+```ruby
+bundle exec rake crowdin:translations:sync_files[locale]
+```
+
+##### Synchronize folders and files with a single command
+#
+```ruby
+bundle exec rake crowdin:translations:sync[locale]
+```
+
+### Translation keys update
+##### Update all remote files (_keeps translation progress_)
+#
+```ruby
+bundle exec rake crowdin:translations:update_files[locale]
+```
+
+##### Update specific remote files
+#
+```ruby
+bundle exec rake crowdin:translations:update_files[locale] -- --file <path to file>
+```
+
+> Note: Adds the missing keys to the remote project and keeps the **Crowdin** translation progress
+#
+
+### Translations status
+```ruby
+bundle exec rake crowdin:translations:status[locale]
+```
+
+> Note: This command will return the information about translation progress
+#
+
+
+### Example of usage
+
+#### Starting point. Phase 1
+- ##### Initialization
+  - 1st option
+    ```ruby
+    bundle exec rake crowdin:translations:add_dirs[locale]
+    ```
+    ```ruby
+    bundle exec rake crowdin:translations:add_files[locale]
+    ```
+  - 2nd option
+    ```ruby
+    bundle exec rake crowdin:translations:setup[locale]
+    ```
+
+#### Phase 2
+Working with translations is a continuous process. It is a matter of time when some member of the development team will add a new translation file or a new translation key to an existing file, or even both of them at the same time. Hence one needs to synchronize periodically the local files with the remote ones so that the *Crowdin* translator sees the new files/strings and performs the translation process.
+
+```ruby
+bundle exec rake crowdin:translations:sync[locale]
+```
+
+> Note: The `sync` and `update_files` commands must be used to let the translator keep track of the new translation files and keys.
+#
+> Note: The `status` command may be used to keep track of translator's progress.
+#
+
+#### Phase 3
+This is not actually a phase. Whenever is needed one can run the `export` and `download` commands and fetch the translations from __Crowdin__.
+
+
+### What can be improved?
+- Add validation for `add_dirs`, `add_files` and `setup` commands. Skip the execution if remote project had been already initialized
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/crowdin.
+Bug reports and pull requests are welcome on GitHub at https://github.com/locomote/crowdin.
 
 ## License
 
