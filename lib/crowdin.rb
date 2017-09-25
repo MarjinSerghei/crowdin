@@ -1,4 +1,4 @@
-require "crowdin/version"
+%w(crowdin/version pathname yaml zip rest-client).each { |dependency| require dependency }
 
 require_relative "crowdin/configuration/messages.rb"
 require_relative "crowdin/configuration/settings.rb"
@@ -23,8 +23,8 @@ require_relative "crowdin/translations/endpoints/update_file_endpoint.rb"
 
 module Crowdin
   def configure(api:, api_key:)
-    configuration[:api] = api
-    configuration[:api_key] = api_key
+    configuration[:api] = api if api
+    configuration[:api_key] = api_key if api_key
   end
 
   def configurable
