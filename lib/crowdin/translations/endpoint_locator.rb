@@ -1,7 +1,6 @@
 module Crowdin
   module Translations
     class EndpointLocator
-      # :reek:TooManyStatements
       def initialize
         endpoint_names.each do |filename|
           filename = filename.to_s
@@ -13,7 +12,6 @@ module Crowdin
         self
       end
 
-      # rubocop:disable Rails/Delegate
       def [](locator)
         endpoints[locator]
       end

@@ -6,7 +6,6 @@ module Crowdin
 
         private :locale, :response
 
-        # :reek:TooManyStatements
         def call(locale:)
           @response = RestClient.get(url).body
           @locale = locale
@@ -15,20 +14,20 @@ module Crowdin
           Crowdin::Translations::Logger.warning error_message(error), color: :yellow
         end
 
-        # :reek:NestedIterators
         def files
-          parse_response_items do |resource|
+          entries = parse_response_items do |resource|
             resource.reduce([]) { |items, item| items << extract_files(item) }
-              .flatten.map { |file| locale.to_s + "/" + file }
           end
+
+          filter_files(entries)
         end
 
-        # :reek:NestedIterators
         def folders
-          parse_response_items do |resource|
+          entries = parse_response_items do |resource|
             resource.reduce([]) { |items, item| items << extract_folders(item) }
-              .flatten.map { |folder| (locale.to_s + "/" + folder) }.uniq
           end
+
+          filter_folders(entries)
         end
 
         private
@@ -47,8 +46,15 @@ module Crowdin
           yield result if block_given?
         end
 
-        # rubocop:disable Metrics/AbcSize
-        # :reek:FeatureEnvy and :reek:TooManyStatements
+        def filter_files(entries)
+          entries.flatten.map { |file| locale.to_s + "/" + file }
+        end
+
+        def filter_folders(entries)
+          entries.flatten.map { |folder| (locale.to_s + "/" + folder) }.uniq
+        end
+
+        # :excellence:AbcMetricMethodCheck
         def extract_files(item, result = [], dirs = [item["name"]])
           item_type = item["node_type"]
           directory = item_type == "directory"
@@ -68,7 +74,6 @@ module Crowdin
           result
         end
 
-        # :reek:DuplicateMethodCall and :reek:FeatureEnvy and :reek:TooManyStatements
         def extract_folders(item, result = [], dirs = [item["name"]])
           item_type = item["node_type"]
           directory = item_type == "directory"

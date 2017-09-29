@@ -2,8 +2,6 @@ module Crowdin
   module Translations
     module Endpoints
       class PreTranslateEndpoint < Endpoint
-        # rubocop:disable Metrics/LineLength, Metrics/ParameterLists
-        # :reek:LongParameterList and :reek:BooleanParameter
         def call(languages:, files:, method: :tm, engine: :microsoft, approve_translated: false, import_duplicates: true, apply_untranslated_strings_only: false, perfect_match: false)
           RestClient.post(
             url,

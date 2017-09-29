@@ -15,7 +15,6 @@ module Crowdin
         (@endpoint.to_s + "_endpoint").camelize
       end
 
-      # :reek:DuplicateMethodCall
       def url
         Crowdin.configuration.fetch(:api) + resource + Crowdin.configuration.fetch(:api_key)
       end

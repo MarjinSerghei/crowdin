@@ -38,5 +38,13 @@ module Crowdin
     @configuration ||= { api: Configuration::Settings.api, api_key: Configuration::Settings.api_key }
   end
 
-  module_function :configure, :configurable, :configuration
+  def root
+    File.dirname(__dir__)
+  end
+
+  def lib
+    File.join(root, 'lib')
+  end
+
+  module_function :configure, :configurable, :configuration, :root, :lib
 end

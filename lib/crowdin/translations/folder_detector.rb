@@ -1,21 +1,22 @@
 module Crowdin
   module Translations
     module FolderDetector
-      # rubocop:disable Metrics/AbcSize
-      # :reek:DuplicateMethodCall and :reek:TooManyStatements
       def find_all(resource, folders = [])
-        path = ->(entry) { Pathname.new File.join(resource, entry) }
-
-        entries = resource.entries.select do |entry|
-          File.directory?(path[entry]) && !entry.to_path.in?(%w(. ..))
-        end
-
-        entries.each do |entry|
+        detect_folders(resource).each do |entry|
           folders << sanitize_path(resource, entry)
-          find_all path[entry], folders
+          find_all Pathname.new(File.join(resource, entry)), folders
         end
 
         folders.sort
+      end
+
+      def detect_folders(resource)
+        resource.entries.select do |entry|
+          path = Pathname.new File.join(resource, entry)
+          path_name = path[entry]
+          entry_name = entry.to_path
+          File.directory?(path_name) && !%w(. ..).include?(entry_name)
+        end
       end
 
       def find_root(resource, locales: %w())
@@ -36,8 +37,8 @@ module Crowdin
         (path + "/" + entry).to_s
       end
 
-      module_function :find_all, :find_root, :sanitize_path
-      private_class_method :sanitize_path
+      module_function :find_all, :find_root, :sanitize_path, :detect_folders
+      private_class_method :sanitize_path, :detect_folders
     end
   end
 end

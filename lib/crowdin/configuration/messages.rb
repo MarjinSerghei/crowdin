@@ -9,7 +9,6 @@ module Crowdin
       module_function :load
 
       module Extractor
-        # :reek:NestedIterators and :reek:DuplicateMethodCall and :reek:TooManyStatements
         def call(messages)
           messages.each_key.with_object({}) do |scope, msgs|
             context = messages[scope]
