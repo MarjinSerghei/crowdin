@@ -13,9 +13,8 @@ module Crowdin
       def detect_folders(resource)
         resource.entries.select do |entry|
           path = Pathname.new File.join(resource, entry)
-          path_name = path[entry]
           entry_name = entry.to_path
-          File.directory?(path_name) && !%w(. ..).include?(entry_name)
+          File.directory?(path) && !%w(. ..).include?(entry_name)
         end
       end
 
