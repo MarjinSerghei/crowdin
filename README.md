@@ -116,6 +116,53 @@ bundle exec rake crowdin:translations:status[locale]
 
 ### Example of usage
 
+> Note: Each endpoint has it's own class.
+
+For example: ` <api_url>/update-file?key=<api_key> ` will map to: 
+
+> Note: Current implementation uses **rake tasks** to invoke **call** instance method for each of the endpoint's constant.
+> Note: Use **endpoint** helper to get an object of a certain endpoint.
+
+Ex: `endpoint(:update_file).call(locale: locale, files: files)` will return the result of:
+```ruby
+Crowdin::Translations::Endpoints::UpdateFileEndpoint#call
+```
+
+Here are the endpoints with the signature of **call** method:
+```ruby
+ - Crowdin::Translations::Endpoints::UpdateFileEndpoint#call(locale:, files:)
+ - Crowdin::Translations::Endpoints::AddDirectoryEndpoint#call(locale:)
+ - Crowdin::Translations::Endpoints::AddFilesEndpoint#call(locale:)
+ - Crowdin::Translations::Endpoints::ChangeDirectoryEndpoint#call
+ - Crowdin::Translations::Endpoints::DeleteDirectoryEndpoint#call(locales:)
+ - Crowdin::Translations::Endpoints::DownloadEndpoint#call(locale:)
+ - Crowdin::Translations::Endpoints::ExportEndpoint#call
+ - Crowdin::Translations::Endpoints::InfoEndpoint#call(locale:)
+ - Crowdin::Translations::Endpoints::DeleteFileEndpoint#call(file:)
+ - Crowdin::Translations::Endpoints::LanguageStatusEndpoint#call(locale:)
+ - Crowdin::Translations::Endpoints::PreTranslateEndpoint#call(languages:, files:, method: :tm, engine: :microsoft, approve_translated: false, import_duplicates: true, apply_untranslated_strings_only: false, perfect_match: false)
+```
+
+An example of **rake task**:
+
+```ruby
+namespace :crowdin do
+  namespace :translations do
+    task :add_dirs, [:locale] => :environment do |_, args|
+      Crowdin::Translations::Logger.info "Adds the folders to Crowdin project...", color: :green
+      add_dirs(locale: args[:locale])
+    end
+  end
+end
+
+```
+
+> Note: `Crowdin::Translations::Endpoints::DownloadEndpoint#call(locale:)` **waits for a block** to specify how it should handle the **Crowdin's API** response (**.zip** file).
+
+> Info: Current **TMP rake task** deletes **config/locales/downloads** folder if it exists, creates it again and extracts everything from the **.zip** file.
+
+> Note: For more information check TMP's **lib/tasks/crowdin/translations/** implementation of the **rake tasks**.
+
 #### Starting point. Phase 1
 - ##### Initialization
   - 1st option
@@ -148,6 +195,7 @@ This is not actually a phase. Whenever is needed one can run the `export` and `d
 
 ### What can be improved?
 - Add validation for `add_dirs`, `add_files` and `setup` commands. Skip the execution if remote project had been already initialized
+- Move **rake tasks** to a separate `gem`. Ex: **crowdin-cli**.
 
 ## Development
 
