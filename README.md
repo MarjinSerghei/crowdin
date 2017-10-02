@@ -115,17 +115,19 @@ bundle exec rake crowdin:translations:status[locale]
 
 
 ### Example of usage
+Ex: *API endpoint*: ` <api_url>/update-file?key=<api_key> ` maps to:
+```ruby
+Crowdin::Translations::Endpoints::UpdateFileEndpoint
+```
 
 > Note: Each endpoint has it's own class.
 
-For example: ` <api_url>/update-file?key=<api_key> ` will map to: 
-
-> Note: Current implementation uses **rake tasks** to invoke **call** instance method for each of the endpoint's constant.
+> Note: Current implementation uses **rake tasks** to invoke **call** method for each of the endpoint's created object.
 > Note: Use **endpoint** helper to get an object of a certain endpoint.
 
 Ex: `endpoint(:update_file).call(locale: locale, files: files)` will return the result of:
 ```ruby
-Crowdin::Translations::Endpoints::UpdateFileEndpoint#call
+Crowdin::Translations::Endpoints::UpdateFileEndpoint#call(locale: locale, files: files)
 ```
 
 Here are the endpoints with the signature of **call** method:
