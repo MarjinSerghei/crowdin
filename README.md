@@ -197,7 +197,8 @@ This is not actually a phase. Whenever is needed one can run the `export` and `d
 
 ### What can be improved?
 - Add validation for `add_dirs`, `add_files` and `setup` commands. Skip the execution if remote project had been already initialized
-- Move **rake tasks** to a separate `gem`. Ex: **crowdin-cli**.
+- Move **rake tasks** to a separate `gem`. Ex: **crowdin-cli**
+- Implement branching strategy
 
 ## Development
 
