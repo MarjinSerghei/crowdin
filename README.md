@@ -99,7 +99,7 @@ bundle exec rake crowdin:translations:update_files[locale]
 ##### Update specific remote files
 #
 ```ruby
-bundle exec rake crowdin:translations:update_files[locale] -- --file <path to file>
+bundle exec rake crowdin:translations:update_files[locale] -- --files <path to file>
 ```
 
 > Note: Adds the missing keys to the remote project and keeps the **Crowdin** translation progress
