@@ -2,7 +2,8 @@ module Crowdin
   module Configuration
     module Messages
       def load
-        file = File.join __FILE__.gsub(/\.rb/, ".yml")
+        file = File.join(__dir__, 'messages.yml')
+
         YAML.load_file(file).fetch("messages", {})
       end
 

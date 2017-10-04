@@ -2,7 +2,8 @@ module Crowdin
   module Configuration
     module Settings
       def all
-        file = File.join __FILE__.gsub(/\.rb/, ".yml")
+        file = File.join(__dir__, 'settings.yml')
+
         YAML.load_file(file).fetch("settings", {})
       end
 
