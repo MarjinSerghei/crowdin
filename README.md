@@ -105,6 +105,18 @@ bundle exec rake crowdin:translations:update_files[locale] -- --files <path to f
 > Note: Adds the missing keys to the remote project and keeps the **Crowdin** translation progress
 #
 
+> Note: It supports the optional argument `--files-max` which specifies the number of files to be updated per batch. The default and maximum value is __20__. However it happens that __Crowdin API__ fails and file history can be lost. For this purpose `--files-max 1` can be used along to the specified `--files` to be updated. 
+
+In the following example the specified files will be uploaded `one by one` which adds a bit of reliability but cuts down the performance.
+```ruby
+bundle exec rake crowdin:translations:update_files[locale] -- --files <path to file> --files-max 1
+```
+
+Here no `--files` are specified so it will update all of them `one by one`.
+```ruby
+bundle exec rake crowdin:translations:update_files[locale] -- --files-max 1
+```
+
 ### Translations status
 ```ruby
 bundle exec rake crowdin:translations:status[locale]
