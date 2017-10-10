@@ -1,11 +1,9 @@
 %w(crowdin/version pathname yaml zip rest-client).each { |dependency| require dependency }
 
-require_relative "crowdin/configuration/messages.rb"
 require_relative "crowdin/configuration/settings.rb"
 require_relative "crowdin/translations/folder_detector.rb"
 require_relative "crowdin/translations/logger/colorizer.rb"
 require_relative "crowdin/translations/logger.rb"
-require_relative "crowdin/translations/logger/warnings.rb"
 require_relative "crowdin/translations/endpoint.rb"
 require_relative "crowdin/translations/endpoint_locator.rb"
 require_relative "crowdin/translations/endpoints/add_file_endpoint.rb"
