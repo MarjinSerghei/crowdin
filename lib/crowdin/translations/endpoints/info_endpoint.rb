@@ -37,7 +37,7 @@ module Crowdin
         end
 
         def fetch_items
-          fetch_response_as_hash.dig("info", "files", "item")
+          [fetch_response_as_hash.dig("info", "files", "item")].flatten
         end
 
         def parse_response_items

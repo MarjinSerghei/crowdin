@@ -14,7 +14,7 @@ module Crowdin
         private
 
         def fetch_translations_for(response)
-          Hash.from_xml(response).dig("status", "files", "item")
+          [Hash.from_xml(response).dig("status", "files", "item")].flatten
         end
 
         def fetch_stats_for(translations)
