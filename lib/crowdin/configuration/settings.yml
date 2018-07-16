@@ -1,3 +1,3 @@
 settings:
-  api: https://api.crowdin.com/api/project/travel-management-platform/
-  api_key: d662374adf09966d666dd4b17fe80e65
+  api: <%= ENV["CROWDIN_API"] %>
+  api_key: <%= ENV["CROWDIN_API_KEY"] %>
